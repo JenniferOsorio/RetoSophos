@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <h2>Gestión de Héroes</h2>
+        <button class="btn btn-success" data-toggle="modal" data-target="#superheroModal">Agregar Héroe</button>
+    </div>
+    
+    <div class="col-12 col-md-6 col-lg-8">
+        <form method="get" action="{% url 'buscarHeroe' %}">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar Superhéroe por nombre o habilidad" name="q" id="searchInput">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    {% if request.GET.q %}
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Limpiar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+         
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Origen</th>
+                        <th>Habilidades</th>
+                        <th>Debilidades</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if resultados_busqueda %}
+                        {% for h in resultados_busqueda %}
+                            <tr>
+                                <td>{{ h.id_heroe }}</td>
+                                <td>{{ h.nombre }}</td>
+                                <td>{{ h.edad }}</td>
+                                <td>{{ h.origen }}</td>
+                                <td>{{ h.habilidades }}</td>
+                                <td>{{ h.debilidad }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarHeroeModal{{ h.id_heroe }}">Editar</a>
+                                    <a href="eliminarHeroe/{{ h.id_heroe }}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for h in heroes %}
+                            <tr>
+                                <td>{{ h.id_heroe }}</td>
+                                <td>{{ h.nombre }}</td>
+                                <td>{{ h.edad }}</td>
+                                <td>{{ h.origen }}</td>
+                                <td>{{ h.habilidades }}</td>
+                                <td>{{ h.debilidad }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarHeroeModal{{ h.id_heroe }}">Editar</a>
+                                    <a href="eliminarHeroe/{{ h.id_heroe }}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar héroes -->
+{% for h in heroes %}
+<div class="modal fade" id="editarHeroeModal{{ h.id_heroe }}" tabindex="-1" role="dialog" aria-labelledby="editarHeroeModalLabel{{ h.id_heroe }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarHeroeModalLabel{{ h.id_heroe }}">Editar Héroe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/editarHeroe/{{ h.id_heroe }}/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="editNombre" value="{{ h.nombre }}" class="form-control" placeholder="Nombre" required>
+                    <input type="text" name="editEdad" value="{{ h.edad }}" class="form-control" placeholder="Edad" required>
+                    <input type="text" name="editOrigen" value="{{ h.origen }}" class="form-control" placeholder="Origen" required>
+                    <input type="text" name="editHabilidades" value="{{ h.habilidades }}" class="form-control" placeholder="Habilidades" required>
+                    <input type="text" name="editDebilidad" value="{{ h.debilidad }}" class="form-control" placeholder="Debilidad" required>
+                    <button type="submit" class="btn btn-success btn-block">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Modal para agregar héroes -->
+<div class="modal" id="superheroModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Agregar Héroe</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/crearHeroe/" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" id="txtNombre" name="txtNombre" class="form-control" placeholder="Nombre" required>
+                                <input type="number" id="txtEdad" name="txtEdad" class="form-control" placeholder="Edad" required min="1">
+                                <input type="text" id="txtOrigen" name="txtOrigen" class="form-control" placeholder="Origen" required>
+                                <input type="text" id="txtHabilidades" name="txtHabilidades" class="form-control" placeholder="Habilidades" required>
+                                <input type="text" id="txtDebilidad" name="txtDebilidad" class="form-control" placeholder="Debilidad" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

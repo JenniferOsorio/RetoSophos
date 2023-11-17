@@ -1,0 +1,99 @@
+INSERT INTO reto_heroe (nombre, edad, origen, habilidades, debilidad) VALUES
+    ('Superman', 32, 'The Guardians of the Globe', 'Vuelo, Fuerza', 'Criptonita'),
+    ('Batman', 38, 'The Guardians of the Globe', 'Inteligencia, Combate cuerpo a cuerpo', 'Falta de poderes sobrenaturales'),
+    ('Wonder Woman', 27, 'The Guardians of the Globe', 'Fuerza, Velocidad', 'Pérdida de poderes al quedarse sin luz'),
+    ('Flash', 30, 'The Guardians of the Globe', 'Super velocidad', 'Velocidad limitada'),
+    ('Green Lantern', 35, 'The Guardians of the Globe', 'Anillo de poder', 'Miedo al agua'),
+    ('Aquaman', 29, 'The Guardians of the Globe', 'Comunicación con animales marinos', 'Fuego'),
+    ('Martian Manhunter', 34, 'The Guardians of the Globe', 'Fuerza, Telepatía', 'Falta de debilidades conocidas'),
+    ('Black Canary', 33, 'The Guardians of the Globe', 'Gritos ultrasónicos', 'Gritos ultrasónicos'),
+    ('Green Arrow', 28, 'The Guardians of the Globe', 'Experto arquero', 'Falta de superpoderes'),
+    ('Hawkman', 40, 'The Guardians of the Globe', 'Vuelo, Fuerza', 'Derivados de la tecnología'),
+    ('Cyborg', 26, 'The Guardians of the Globe', 'Fuerza sobrehumana', 'Dependencia de la palabra "Shazam"'),
+    ('Shazam', 31, 'The Guardians of the Globe', 'Fuerza sobrehumana', 'Falta de alas en forma humana'),
+    ('Hawkgirl', 37, 'The Guardians of the Globe', 'Vuelo, Fuerza', 'Limitación en el tamaño'),
+    ('Atom', 29, 'The Guardians of the Globe', 'Encogimiento', 'Falta de superpoderes'),
+    ('Zatanna', 36, 'The Guardians of the Globe', 'Manipulación mágica', 'Manipulación mágica'),
+    ('Black Lightning', 27, 'The Guardians of the Globe', 'Generación de electricidad', 'Falta de poderes sobrenaturales'),
+    ('Atom Smasher', 32, 'The Guardians of the Globe', 'Crecimiento', 'Fuerza excesiva puede causar problemas'),
+    ('Starfire', 30, 'The Guardians of the Globe', 'Vuelo, Energía estelar', 'Vulnerabilidad a la magia'),
+    ('Supergirl', 26, 'The Guardians of the Globe', 'Vuelo, Fuerza', 'Viento extremo'),
+    ('Red Tornado', 38, 'The Guardians of the Globe', 'Control del viento', 'Vuelo');
+
+
+
+INSERT INTO reto_villano (nombre, edad, origen, habilidades, debilidad) VALUES
+    ('Lex Luthor', 45, 'The Guardians of the Globe', 'Inteligencia genial', 'Odio a Superman'),
+    ('Joker', 40, 'The Guardians of the Globe', 'Caos, Crimen', 'Psicopatía'),
+    ('Cheetah', 35, 'The Guardians of the Globe', 'Fuerza, Velocidad', 'Obsesión con Wonder Woman'),
+    ('Reverse-Flash', 38, 'The Guardians of the Globe', 'Super velocidad', 'Obsesión con Flash'),
+    ('Sinestro', 50, 'The Guardians of the Globe', 'Anillo de poder', 'Miedo'),
+    ('Black Manta', 42, 'The Guardians of the Globe', 'Experto en combate submarino', 'Odio a Aquaman'),
+    ('Despero', 50, 'The Guardians of the Globe', 'Fuerza sobrehumana, Telepatía', 'Ambición desmesurada'),
+    ('Deathstroke', 55, 'The Guardians of the Globe', 'Maestro en combate', 'Doble personalidad'),
+    ('Merlyn', 48, 'The Guardians of the Globe', 'Maestro arquero', 'Obsesión con Green Arrow'),
+    ('Shadow Thief', 40, 'The Guardians of the Globe', 'Manipulación de sombras', 'Codicia'),
+    ('Grid', 5, 'The Guardians of the Globe', 'Control de tecnología', 'Deseo de destrucción'),
+    ('Black Adam', 40, 'The Guardians of the Globe', 'Fuerza sobrehumana, Resistencia', 'Venganza'),
+    ('Giganta', 37, 'The Guardians of the Globe', 'Crecimiento, Fuerza', 'Problemas de estatura'),
+    ('Morgaine le Fey', 10, 'The Guardians of the Globe', 'Magia oscura', 'Deseo de poder'),
+    ('Livewire', 33, 'The Guardians of the Globe', 'Generación de electricidad', 'Inestabilidad emocional'),
+    ('Ogre', 32, 'The Guardians of the Globe', 'Fuerza, Durabilidad', 'Falta de inteligencia'),
+    ('Eclipso', 50, 'The Guardians of the Globe', 'Control de la oscuridad', 'Influencia corrupta'),
+    ('Ultra-Humanite', 80, 'The Guardians of the Globe', 'Inteligencia genial', 'Cuerpo de gorila'),
+    ('Silver Banshee', 30, 'The Guardians of the Globe', 'Gritos mortales', 'Maldición'),
+    ('Doctor Light', 40, 'The Guardians of the Globe', 'Manipulación de luz', 'Ceguera');
+    
+  INSERT INTO reto_pelea (id_villano_id, id_heroe_id, resultado) VALUES
+    (1, 1, '2-1'),
+    (2, 2, '1-2'),
+    (3, 3, '3-0'),
+    (4, 4, '0-3'),
+    (5, 5, '2-1'),
+    (6, 6, '1-2'),
+    (7, 7, '3-0'),
+    (8, 8, '0-3'),
+    (9, 9, '2-1'),
+    (10, 10, '1-2'),
+    (11, 11, '3-0'),
+    (12, 12, '0-3'),
+    (13, 13, '2-1'),
+    (14, 14, '1-2'),
+    (15, 15, '3-0'),
+    (16, 16, '0-3'),
+    (17, 17, '2-1'),
+    (18, 18, '1-2');
+    
+
+INSERT INTO reto_patrocinador (nombre, id_heroe_id, monto, origenDinero) VALUES
+    ('Wayne Enterprises', 2, 75000, 'Empresa'),
+    ('Amazon Funding', 3, 60000, 'Empresa de Tecnología'),
+    ('Speedy Sports', 9, 80000, 'Patrocinio Deportivo'),
+    ('Aquatic Investments', 6, 70000, 'Inversiones Acuáticas'),
+    ('Martian Innovations', 7, 90000, 'Innovaciones Marcianas'),
+    ('Canary Entertainment', 8, 55000, 'Entretenimiento'),
+    ('Green Arrow Archery Co.', 10, 60000, 'Empresa de Arquería'),
+    ('Hawk Tech Solutions', 11, 75000, 'Soluciones Tecnológicas'),
+    ('Cybernetic Industries', 12, 80000, 'Industrias Cibernéticas'),
+    ('Shazam Power Corp.', 13, 70000, 'Corporación de Energía Shazam'),
+    ('Hawk Air', 14, 90000, 'Aerolínea Hawk'),
+    ('Atom Science Foundation', 15, 55000, 'Fundación Científica Átomo'),
+    ('Zatanna Magic Emporium', 16, 60000, 'Emporio de Magia de Zatanna'),
+    ('Lightning Energy Co.', 17, 75000, 'Empresa de Energía Eléctrica'),
+    ('Growth Industries', 18, 80000, 'Industrias del Crecimiento'),
+    ('Starfire Galactic Ventures', 19, 70000, 'Aventuras Galácticas Starfire'),
+    ('Supergirl Aerospace', 20, 90000, 'Aeroespacial Supergirl'),
+    ('Wind Control Ltd.', 1, 55000, 'Control del Viento Ltda.'),
+    ('Elemental Power Corp.', 4, 60000, 'Corporación de Poder Elemental'),
+    ('Tornado Technologies', 5, 75000, 'Tecnologías Tornado');
+
+
+SELECT * FROM reto_villano;
+SELECT * FROM reto_pelea;
+SELECT * FROM reto_heroe;
+SELECT * FROM reto_patrocinador;
+
+
+
+
+

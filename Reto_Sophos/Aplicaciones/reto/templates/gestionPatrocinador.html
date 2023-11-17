@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <h2>Gestión de Patrocinador</h2>
+        <button class="btn btn-success" data-toggle="modal" data-target="#patrocinadorModal">Agregar Patrocinador</button>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-8">
+        <form method="get" action="{% url 'buscarPatrocinador' %}">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar por nombre patrocinador o por nombre del héroe" name="q" id="searchInput" value="{{ request.GET.q }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    {% if request.GET.q %}
+                        <a href="{% url 'gestion_patrocinador' %}" class="btn btn-outline-secondary">Limpiar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Heroe</th>
+                        <th>Monto</th>
+                        <th>Origen Dinero</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if resultados_busqueda %}
+                        {% for p in resultados_busqueda %}
+                            <tr>
+                                <td>{{ p.id_patrocinador }}</td>
+                                <td>{{ p.nombre }}</td>
+                                <td>{{ p.id_heroe.nombre }}</td>
+                                <td>{{ p.monto }}</td>
+                                <td>{{ p.origenDinero }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarPatrocinadorModal{{ p.id_patrocinador }}">Editar</a>
+                                    <a href="{% url 'eliminar_patrocinador' p.id_patrocinador %}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for p in patrocinador %}
+                            <tr>
+                                <td>{{ p.id_patrocinador }}</td>
+                                <td>{{ p.nombre }}</td>
+                                <td>{{ p.id_heroe.nombre }}</td>
+                                <td>{{ p.monto }}</td>
+                                <td>{{ p.origenDinero }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarPatrocinadorModal{{ p.id_patrocinador }}">Editar</a>
+                                    <a href="{% url 'eliminar_patrocinador' p.id_patrocinador %}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar patrocinadores -->
+{% for p in patrocinador %}
+<div class="modal fade" id="editarPatrocinadorModal{{ p.id_patrocinador }}" tabindex="-1" role="dialog" aria-labelledby="editarPatrocinadorModalLabel{{ p.id_patrocinador }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarPatrocinadorModalLabel{{ p.id_patrocinador }}">Editar Patrocinador</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/editarPatrocinador/{{ p.id_patrocinador }}/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="editNombre" value="{{ p.nombre }}" class="form-control" placeholder="Nombre Patrocinador" required>
+                    <input type="text" name="editIdHeroe" value="{{ p.id_heroe }}" class="form-control" placeholder="Id Heroe" required>
+                    <input type="text" name="editMonto" value="{{ p.monto }}" class="form-control" placeholder="Monto" required>
+                    <input type="text" name="editOrigenDinero" value="{{ p.origenDinero }}" class="form-control" placeholder="Origen Dinero" required>
+                    <button type="submit" class="btn btn-success btn-block">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Modal para agregar patrocinadores -->
+<div class="modal" id="patrocinadorModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Agregar Patrocinador</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                {% if error_message %}
+                    <p class="text-danger">{{ error_message }}</p>
+                {% endif %}
+                <form action="/crearPatrocinador/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" placeholder="Nombre Patrocinador" required>
+                        <input type="number" id="txtHeroe" name="txtHeroe" class="form-control" placeholder="Id Heroe" required min="1" title="Ingrese un ID de héroe válido.">
+                        <input type="number" id="txtMonto" name="txtMonto" class="form-control" placeholder="Monto" required min="50000">
+                        <input type="text" id="txtOrigenDinero" name="txtOrigenDinero" class="form-control" placeholder="Origen Dinero" required>
+                        <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <h2>Gestión de Villanos</h2>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#villanoModal">Agregar Villano</button>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-8">
+        <form method="get" action="{% url 'buscarVillano' %}">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar Villano por nombre, origen, debilidad" name="q" id="searchInput">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    {% if request.GET.q %}
+                        <a href="{% url 'gestion_villanos' %}" class="btn btn-outline-secondary">Limpiar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Origen</th>
+                        <th>Habilidades</th>
+                        <th>Debilidades</th>
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if resultados_busqueda %}
+                        {% for h in resultados_busqueda %}
+                            <tr>
+                                <td>{{ h.id_villano }}</td>
+                                <td>{{ h.nombre }}</td>
+                                <td>{{ h.edad }}</td>
+                                <td>{{ h.origen }}</td>
+                                <td>{{ h.habilidades }}</td>
+                                <td>{{ h.debilidad }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarVillanoModal{{ h.id_villano }}">Editar</a>
+                                    <a href="eliminarVillano/{{ h.id_villano }}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for v in villanos %}
+                            <tr>
+                                <td>{{ v.id_villano }}</td>
+                                <td>{{ v.nombre }}</td>
+                                <td>{{ v.edad }}</td>
+                                <td>{{ v.origen }}</td>
+                                <td>{{ v.habilidades }}</td>
+                                <td>{{ v.debilidad }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarVillanoModal{{ v.id_villano }}">Editar</a>
+                                    <a href="{% url 'eliminar_villano' v.id_villano %}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Villano -->
+<div class="modal" id="villanoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Agregar Villano</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/crearVillano/" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" id="txtNombre" name="txtNombre" class="form-control" placeholder="Nombre" required>
+                                <input type="number" id="txtEdad" name="txtEdad" class="form-control" placeholder="Edad" required min="0">
+                                <input type="text" id="txtOrigen" name="txtOrigen" class="form-control" placeholder="Origen" required>
+                                <input type="text" id="txtHabilidades" name="txtHabilidades" class="form-control" placeholder="Habilidades" required>
+                                <input type="text" id="txtDebilidad" name="txtDebilidad" class="form-control" placeholder="Debilidad" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar villanos -->
+{% for v in villanos %}
+<div class="modal fade" id="editarVillanoModal{{ v.id_villano }}" tabindex="-1" role="dialog" aria-labelledby="editarVillanoModalLabel{{ v.id_villano }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarVillanoModalLabel{{ v.id_villano }}">Editar Villano</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/editarVillano/{{ v.id_villano }}/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="editNombre" value="{{ v.nombre }}" class="form-control" placeholder="Nombre" required>
+                    <input type="text" name="editEdad" value="{{ v.edad }}" class="form-control" placeholder="Edad" required>
+                    <input type="text" name="editOrigen" value="{{ v.origen }}" class="form-control" placeholder="Origen" required>
+                    <input type="text" name="editHabilidades" value="{{ v.habilidades }}" class="form-control" placeholder="Habilidades" required>
+                    <input type="text" name="editDebilidad" value="{{ v.debilidad }}" class="form-control" placeholder="Debilidad" required>
+                    <button type="submit" class="btn btn-success btn-block">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

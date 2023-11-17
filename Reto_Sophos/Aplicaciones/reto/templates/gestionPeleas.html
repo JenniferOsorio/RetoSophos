@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <h2>Gestión de Pelea</h2>
+        <button class="btn btn-success" data-toggle="modal" data-target="#peleaModal">Agregar Pelea</button>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-8">
+        <form method="get" action="{% url 'buscarPelea' %}">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar Pelea por nombre del héroe o nombre del villano" name="q" id="searchInput">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    {% if request.GET.q %}
+                    <a href="{% url 'gestion_pelea' %}" class="btn btn-outline-secondary">Limpiar</a>
+                {% endif %}
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Heroe</th>
+                        <th>Villano</th>
+                        <th>Resultado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if resultados_busqueda %}
+                        {% for p in resultados_busqueda %}
+                            <tr>
+                                <td>{{ p.id_pelea }}</td>
+                                <td>{{ p.id_heroe.nombre }}</td>
+                                <td>{{ p.id_villano.nombre }}</td>
+                                <td>{{ p.resultado }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarPeleaModal{{ p.id_pelea }}">Editar</a>
+                                    <a href="{% url 'eliminar_pelea' p.id_pelea %}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for p in pelea %}
+                            <tr>
+                                <td>{{ p.id_pelea }}</td>
+                                <td>{{ p.id_heroe.nombre }}</td>
+                                <td>{{ p.id_villano.nombre }}</td>
+                                <td>{{ p.resultado }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#editarPeleaModal{{ p.id_pelea }}">Editar</a>
+                                    <a href="{% url 'eliminar_pelea' p.id_pelea %}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modales para editar peleas -->
+{% for p in pelea %}
+<div class="modal fade" id="editarPeleaModal{{ p.id_pelea }}" tabindex="-1" role="dialog" aria-labelledby="editarPeleaModalLabel{{ p.id_pelea }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarPeleaModalLabel{{ p.id_pelea }}">Editar Pelea</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'editar_pelea' p.id_pelea %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="editIdHeroe" value="{{ p.id_heroe.id }}" class="form-control" placeholder="Id Heroe" required>
+                    <input type="text" name="editIdVillano" value="{{ p.id_villano.id }}" class="form-control" placeholder="Id Villano" required>
+                    <input type="text" name="editResultado" value="{{ p.resultado }}" class="form-control" placeholder="Resultado" required>
+                    <button type="submit" class="btn btn-success btn-block">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Modal para agregar peleas -->
+<div class="modal" id="peleaModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Agregar Pelea</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                {% if error_message %}
+                    <p class="text-danger">{{ error_message }}</p>
+                {% endif %}
+                <form action="/crearPelea/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="number" id="txtHeroe" name="txtHeroe" class="form-control" placeholder="Id Heroe" required min="1" title="Ingrese un ID de héroe válido.">
+                        <input type="number" id="txtVillano" name="txtVillano" class="form-control" placeholder="Id Villano" required min="1" title="Ingrese un ID de villano válido.">
+                        <input type="text" id="txtResultado" name="txtResultado" class="form-control" placeholder="Resultado" required>
+                        <input type="hidden" name="from_agregar_pelea_button" value="1">
+                        <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
