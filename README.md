@@ -34,7 +34,7 @@ Bienvenido a los datos de la organización de The Guardians of the Globe, un pro
 
 The Guardians of the Globe, un equipo de individuos extraordinarios con superpoderes, incluyendo al icónico Mark Greyson, tienen la misión de proteger la Tierra de villanos, amenazas externas y peligros internos. Este proyecto simplifica la gestión de cada héroe, villano, patrocinador y pelea dentro de la organización, proporcionando una base de datos integral para un registro y análisis eficientes.
 
-###Tecnologías Utilizadas
+##Tecnologías Utilizadas
 
 - **Marco de Trabajo**: Djando.
 - **Base de Datos**: SQLiteStudio.
